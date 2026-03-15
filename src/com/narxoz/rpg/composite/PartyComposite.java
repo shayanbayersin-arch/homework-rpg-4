@@ -51,7 +51,7 @@ public class PartyComposite implements CombatNode {
 
     @Override
     public boolean isAlive() {
-        // TODO: Composite liveness
+   
         // Return true when at least one child is alive.
         return false;
     }
@@ -63,7 +63,7 @@ public class PartyComposite implements CombatNode {
 
     @Override
     public void printTree(String indent) {
-        // TODO: Tree visualization
+    
         // Print this node and recurse into children with increased indent.
         System.out.println(indent + "+ " + name + " [TODO: compute HP/ATK]");
     }
