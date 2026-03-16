@@ -1,3 +1,4 @@
+
 package com.narxoz.rpg;
 
 import com.narxoz.rpg.bridge.*;
@@ -13,58 +14,43 @@ public class Main {
 
         System.out.println("=== RPG Raid System Demo ===");
 
-        // ---------- Singleton ----------
         GameConfig config = GameConfig.getInstance();
         config.printConfig();
 
-        // ---------- Factory (создание героев) ----------
         HeroFactory warriorFactory = new WarriorFactory();
         HeroFactory mageFactory = new MageFactory();
 
-        HeroUnit warrior = warriorFactory.createHero("Thor");
-        HeroUnit mage = mageFactory.createHero("Merlin");
+        HeroUnit warrior = warriorFactory.createHero();
+        HeroUnit mage = mageFactory.createHero();
 
-        // ---------- Builder (создание врагов) ----------
-        EnemyBuilder enemyBuilder = new EnemyBuilder();
+        EnemyBuilder builder = new EnemyBuilder();
 
-        EnemyUnit goblin = enemyBuilder
+        EnemyUnit goblin = builder
                 .setName("Goblin")
                 .setHealth(80)
                 .setAttack(15)
                 .build();
 
-        EnemyUnit orc = enemyBuilder
+        EnemyUnit orc = builder
                 .setName("Orc")
                 .setHealth(120)
                 .setAttack(25)
                 .build();
 
-        // ---------- Composite (создание групп) ----------
-        PartyComposite heroParty = new PartyComposite("Hero Party");
-        heroParty.add(warrior);
-        heroParty.add(mage);
+        PartyComposite heroes = new PartyComposite("Heroes");
+        heroes.add(warrior);
+        heroes.add(mage);
 
-        PartyComposite enemyParty = new PartyComposite("Enemy Party");
-        enemyParty.add(goblin);
-        enemyParty.add(orc);
+        PartyComposite enemies = new PartyComposite("Enemies");
+        enemies.add(goblin);
+        enemies.add(orc);
 
-        // ---------- Bridge (skills + effects) ----------
         Skill fireball = new SingleTargetSkill("Fireball", 30, new FireEffect());
-        Skill iceStorm = new AreaSkill("Ice Storm", 20, new IceEffect());
-
-        System.out.println("\n=== Skills Demo ===");
         fireball.cast(goblin);
-        iceStorm.cast(enemyParty);
 
-        // ---------- Raid Engine ----------
         RaidEngine engine = new RaidEngine();
 
-        System.out.println("\n=== Raid Battle ===");
-
-        RaidResult result = engine.startRaid(heroParty, enemyParty);
-
-        System.out.println("\n=== Battle Result ===");
-        System.out.println(result.getWinner());
-
+        engine.runRaid(heroes, enemies, fireball, null); 
+    
     }
 }

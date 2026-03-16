@@ -2,6 +2,7 @@ package com.narxoz.rpg.battle;
 
 import com.narxoz.rpg.bridge.Skill;
 import com.narxoz.rpg.composite.CombatNode;
+import com.narxoz.rpg.composite.PartyComposite;
 
 import java.util.Random;
 
@@ -20,4 +21,6 @@ public class RaidEngine {
         result.addLine("TODO: implement raid simulation");
         return result;
     }
+
+  
 }
