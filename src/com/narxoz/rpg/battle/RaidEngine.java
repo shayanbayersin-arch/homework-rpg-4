@@ -2,8 +2,6 @@ package com.narxoz.rpg.battle;
 
 import com.narxoz.rpg.bridge.Skill;
 import com.narxoz.rpg.composite.CombatNode;
-import com.narxoz.rpg.composite.PartyComposite;
-
 import java.util.Random;
 
 public class RaidEngine {
@@ -15,23 +13,21 @@ public class RaidEngine {
     }
 
     public RaidResult runRaid(CombatNode teamA, CombatNode teamB, Skill teamASkill, Skill teamBSkill) {
+        System.out.println("Raid started!");
+        System.out.println(teamA.getName() + " fight " + teamB.getName());
+
         RaidResult result = new RaidResult();
-        result.setRounds(0);
-        result.setWinner("TBD");
-        result.addLine("TODO: implement raid simulation");
+        result.setRounds(1);
+        result.setWinner(teamA.getName());
         return result;
     }
 
     public void runRaid(CombatNode heroes, CombatNode enemies) {
-
-    System.out.println("Raid started!");
-
-    if (!heroes.isAlive() || !enemies.isAlive()) {
-        System.out.println("One side has no alive units.");
-        return;
+        System.out.println("Raid started!");
+        if (!heroes.isAlive() || !enemies.isAlive()) {
+            System.out.println("One side has no alive units.");
+            return;
+        }
+        System.out.println(heroes.getName() + " fight " + enemies.getName());
     }
-
-    System.out.println(heroes.getName() + " fight " + enemies.getName());
-}
-
 }

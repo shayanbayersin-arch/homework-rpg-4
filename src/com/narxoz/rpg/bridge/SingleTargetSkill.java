@@ -9,6 +9,8 @@ public class SingleTargetSkill extends Skill {
 
     @Override
     public void cast(CombatNode target) {
-        
+        int damage = resolvedDamage();
+        target.takeDamage(damage);
+        System.out.println(getSkillName() + " deals " + damage + " " + getEffectName().toLowerCase() + " damage to " + target.getName());
     }
 }

@@ -27,33 +27,38 @@ public class PartyComposite implements CombatNode {
 
     @Override
     public int getHealth() {
-   
-        return 0;
+        int totalHP = 0;
+        for (CombatNode child : children) {
+            totalHP += child.getHealth();
+        }
+        return totalHP;
     }
 
     @Override
     public int getAttackPower() {
-      
-        return 0;
+        int totalATK = 0;
+        for (CombatNode child : children) {
+            totalATK += child.getAttackPower();
+        }
+        return totalATK;
     }
 
     @Override
     public void takeDamage(int amount) {
-       
+        if (children.isEmpty()) return;
+        int damagePerChild = amount / children.size();
+        for (CombatNode child : children) {
+            child.takeDamage(damagePerChild);
+        }
     }
 
     @Override
     public boolean isAlive() {
-
-    for (CombatNode child : children) {
-        if (child.isAlive()) {
-            return true;
+        for (CombatNode child : children) {
+            if (child.isAlive()) return true;
         }
+        return false;
     }
-
-    return false;
-    }
-    
 
     @Override
     public List<CombatNode> getChildren() {
@@ -62,31 +67,9 @@ public class PartyComposite implements CombatNode {
 
     @Override
     public void printTree(String indent) {
-    int totalHP = 0;
-    int totalATK = 0;
-
-    for (CombatNode child : children) {
-    totalHP += child.getHealth();
-    totalATK += child.getAttackPower();
-    }
-
-    System.out.println(indent + "+ " + name + " [HP=" + totalHP + ", ATK=" + totalATK + "]");
-
-    for (CombatNode child : children) {
-     child.printTree(indent + "  ");
-    }
-    }
-
-    private List<CombatNode> getAliveChildren() {
-
-    List<CombatNode> alive = new ArrayList<>();
-
-    for (CombatNode child : children) {
-        if (child.isAlive()) {
-            alive.add(child);
+        System.out.println(indent + "+ " + name + " [HP=" + getHealth() + ", ATK=" + getAttackPower() + "]");
+        for (CombatNode child : children) {
+            child.printTree(indent + "  ");
         }
     }
-
-    return alive;
-}
 }
