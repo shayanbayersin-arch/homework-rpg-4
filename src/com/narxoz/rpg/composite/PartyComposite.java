@@ -44,10 +44,16 @@ public class PartyComposite implements CombatNode {
 
     @Override
     public boolean isAlive() {
-   
-        // Return true when at least one child is alive.
-        return false;
+
+    for (CombatNode child : children) {
+        if (child.isAlive()) {
+            return true;
+        }
     }
+
+    return false;
+    }
+    
 
     @Override
     public List<CombatNode> getChildren() {
@@ -72,6 +78,15 @@ public class PartyComposite implements CombatNode {
     }
 
     private List<CombatNode> getAliveChildren() {
-        return new ArrayList<>();
+
+    List<CombatNode> alive = new ArrayList<>();
+
+    for (CombatNode child : children) {
+        if (child.isAlive()) {
+            alive.add(child);
+        }
     }
+
+    return alive;
+}
 }
