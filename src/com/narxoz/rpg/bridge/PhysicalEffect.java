@@ -5,7 +5,6 @@ public class PhysicalEffect implements EffectImplementor {
     public int computeDamage(int basePower) {
         return Math.max(0, basePower);
     }
-
     @Override
     public String getEffectName() {
         return "Physical";
