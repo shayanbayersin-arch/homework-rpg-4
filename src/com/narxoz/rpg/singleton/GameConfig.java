@@ -14,5 +14,7 @@ public class GameConfig {
         return instance;
     }
 
-    
+    public void printConfig() {
+    System.out.println("Game configuration loaded");
+    }
 }

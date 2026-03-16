@@ -1,65 +1,70 @@
 package com.narxoz.rpg;
 
-import com.narxoz.rpg.battle.RaidEngine;
-import com.narxoz.rpg.battle.RaidResult;
-import com.narxoz.rpg.bridge.AreaSkill;
-import com.narxoz.rpg.bridge.FireEffect;
-import com.narxoz.rpg.bridge.IceEffect;
-import com.narxoz.rpg.bridge.SingleTargetSkill;
-import com.narxoz.rpg.bridge.Skill;
-import com.narxoz.rpg.composite.CombatNode;
-import com.narxoz.rpg.composite.EnemyUnit;
-import com.narxoz.rpg.composite.HeroUnit;
-import com.narxoz.rpg.composite.PartyComposite;
-import com.narxoz.rpg.composite.RaidGroup;
+import com.narxoz.rpg.bridge.*;
+import com.narxoz.rpg.composite.*;
+import com.narxoz.rpg.battle.*;
+import com.narxoz.rpg.factory.*;
+import com.narxoz.rpg.builder.*;
+import com.narxoz.rpg.singleton.GameConfig;
 
 public class Main {
+
     public static void main(String[] args) {
-        System.out.println("=== Homework 4 Demo: Bridge + Composite ===\n");
 
-        // TODO: build leaves
-        HeroUnit warrior = new HeroUnit("Arthas", 140, 30);
-        HeroUnit mage = new HeroUnit("Jaina", 90, 40);
-        EnemyUnit goblin = new EnemyUnit("Goblin", 70, 20);
-        EnemyUnit orc = new EnemyUnit("Orc", 120, 25);
+        System.out.println("=== RPG Raid System Demo ===");
 
-        // TODO: build composite hierarchy (nested)
-        PartyComposite heroes = new PartyComposite("Heroes");
-        heroes.add(warrior);
-        heroes.add(mage);
+        // ---------- Singleton ----------
+        GameConfig config = GameConfig.getInstance();
+        config.printConfig();
 
-        PartyComposite frontline = new PartyComposite("Frontline");
-        frontline.add(goblin);
-        frontline.add(orc);
+        // ---------- Factory (создание героев) ----------
+        HeroFactory warriorFactory = new WarriorFactory();
+        HeroFactory mageFactory = new MageFactory();
 
-        RaidGroup enemies = new RaidGroup("Enemy Raid");
-        enemies.add(frontline);
+        HeroUnit warrior = warriorFactory.createHero("Thor");
+        HeroUnit mage = mageFactory.createHero("Merlin");
 
-        System.out.println("--- Team Structures ---");
-        heroes.printTree("");
-        enemies.printTree("");
+        // ---------- Builder (создание врагов) ----------
+        EnemyBuilder enemyBuilder = new EnemyBuilder();
 
-        // TODO: Bridge combinations
-        Skill slashFire = new SingleTargetSkill("Slash", 20, new FireEffect());
-        Skill slashIce = new SingleTargetSkill("Slash", 20, new IceEffect());
-        Skill stormFire = new AreaSkill("Storm", 15, new FireEffect());
+        EnemyUnit goblin = enemyBuilder
+                .setName("Goblin")
+                .setHealth(80)
+                .setAttack(15)
+                .build();
 
-        System.out.println("\n--- Bridge Preview ---");
-        System.out.println(slashFire.getSkillName() + " using " + slashFire.getEffectName());
-        System.out.println(slashIce.getSkillName() + " using " + slashIce.getEffectName());
-        System.out.println(stormFire.getSkillName() + " using " + stormFire.getEffectName());
+        EnemyUnit orc = enemyBuilder
+                .setName("Orc")
+                .setHealth(120)
+                .setAttack(25)
+                .build();
 
-        // TODO: run raid
-        RaidEngine engine = new RaidEngine().setRandomSeed(42L);
-        RaidResult result = engine.runRaid(heroes, enemies, slashFire, stormFire);
+        // ---------- Composite (создание групп) ----------
+        PartyComposite heroParty = new PartyComposite("Hero Party");
+        heroParty.add(warrior);
+        heroParty.add(mage);
 
-        System.out.println("\n--- Raid Result ---");
-        System.out.println("Winner: " + result.getWinner());
-        System.out.println("Rounds: " + result.getRounds());
-        for (String line : result.getLog()) {
-            System.out.println(line);
-        }
+        PartyComposite enemyParty = new PartyComposite("Enemy Party");
+        enemyParty.add(goblin);
+        enemyParty.add(orc);
 
-        System.out.println("\n=== Demo Complete ===");
+        // ---------- Bridge (skills + effects) ----------
+        Skill fireball = new SingleTargetSkill("Fireball", 30, new FireEffect());
+        Skill iceStorm = new AreaSkill("Ice Storm", 20, new IceEffect());
+
+        System.out.println("\n=== Skills Demo ===");
+        fireball.cast(goblin);
+        iceStorm.cast(enemyParty);
+
+        // ---------- Raid Engine ----------
+        RaidEngine engine = new RaidEngine();
+
+        System.out.println("\n=== Raid Battle ===");
+
+        RaidResult result = engine.startRaid(heroParty, enemyParty);
+
+        System.out.println("\n=== Battle Result ===");
+        System.out.println(result.getWinner());
+
     }
 }

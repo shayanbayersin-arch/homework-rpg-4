@@ -27,21 +27,21 @@ public class PartyComposite implements CombatNode {
 
     @Override
     public int getHealth() {
-        // TODO: Composite aggregation
+    
         // Return total health of all children (and nested children).
         return 0;
     }
 
     @Override
     public int getAttackPower() {
-        // TODO: Composite aggregation
+        
         // Return total attack of alive children only.
         return 0;
     }
 
     @Override
     public void takeDamage(int amount) {
-        // TODO: Composite distribution
+    
         // Distribute incoming damage across alive children.
         // Suggested baseline:
         // 1) Collect alive children
@@ -69,7 +69,6 @@ public class PartyComposite implements CombatNode {
     }
 
     private List<CombatNode> getAliveChildren() {
-        // TODO: helper for takeDamage()
         return new ArrayList<>();
     }
 }
