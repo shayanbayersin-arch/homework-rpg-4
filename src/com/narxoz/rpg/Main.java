@@ -1,4 +1,3 @@
-
 package com.narxoz.rpg;
 
 import com.narxoz.rpg.bridge.*;
@@ -14,6 +13,7 @@ public class Main {
 
         System.out.println("=== RPG Raid System Demo ===");
 
+        
         GameConfig config = GameConfig.getInstance();
         config.printConfig();
 
@@ -23,6 +23,7 @@ public class Main {
         HeroUnit warrior = warriorFactory.createHero();
         HeroUnit mage = mageFactory.createHero();
 
+       
         EnemyBuilder builder = new EnemyBuilder();
 
         EnemyUnit goblin = builder
@@ -37,20 +38,35 @@ public class Main {
                 .setAttack(25)
                 .build();
 
-        PartyComposite heroes = new PartyComposite("Heroes");
-        heroes.add(warrior);
-        heroes.add(mage);
+        PartyComposite heroParty = new PartyComposite("Heroes");
+        heroParty.add(warrior);
+        heroParty.add(mage);
 
-        PartyComposite enemies = new PartyComposite("Enemies");
-        enemies.add(goblin);
-        enemies.add(orc);
+        PartyComposite enemyParty = new PartyComposite("Enemies");
+        enemyParty.add(goblin);
+        enemyParty.add(orc);
+
+        System.out.println("\n=== Raid Structure ===");
+        heroParty.printTree("");
+        enemyParty.printTree("");
+
 
         Skill fireball = new SingleTargetSkill("Fireball", 30, new FireEffect());
-        fireball.cast(goblin);
+        Skill iceStorm = new AreaSkill("Ice Storm", 20, new IceEffect());
 
+        System.out.println("\n=== Skills Demo ===");
+
+        fireball.cast(goblin);
+        iceStorm.cast(enemyParty);
+
+       
         RaidEngine engine = new RaidEngine();
 
-        engine.runRaid(heroes, enemies, fireball, null); 
-    
+        System.out.println("\n=== Battle Start ===");
+
+        engine.runRaid(heroParty, enemyParty, fireball, iceStorm);
+
+        System.out.println("\n=== Demo Finished ===");
+
     }
 }

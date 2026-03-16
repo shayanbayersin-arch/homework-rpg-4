@@ -67,8 +67,4 @@ public class PartyComposite implements CombatNode {
         // Print this node and recurse into children with increased indent.
         System.out.println(indent + "+ " + name + " [TODO: compute HP/ATK]");
     }
-
-    private List<CombatNode> getAliveChildren() {
-        return new ArrayList<>();
-    }
 }
