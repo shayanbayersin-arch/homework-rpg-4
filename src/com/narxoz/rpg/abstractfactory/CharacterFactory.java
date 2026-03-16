@@ -1,5 +1,10 @@
 package com.narxoz.rpg.abstractfactory;
 
-public class CharacterFactory {
-    
+import com.narxoz.rpg.composite.EnemyUnit;
+import com.narxoz.rpg.composite.HeroUnit;
+
+public interface CharacterFactory {
+
+    HeroUnit createHero(String name);
+    EnemyUnit createEnemy(String name);
 }
