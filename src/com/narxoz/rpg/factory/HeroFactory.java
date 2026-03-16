@@ -1,5 +1,7 @@
 package com.narxoz.rpg.factory;
+import com.narxoz.rpg.composite.HeroUnit;
 
-public class HeroFactory {
+public interface HeroFactory {
+    HeroUnit createHero();
     
 }
