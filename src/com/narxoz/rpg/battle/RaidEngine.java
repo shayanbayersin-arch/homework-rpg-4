@@ -22,5 +22,16 @@ public class RaidEngine {
         return result;
     }
 
-  
+    public void runRaid(CombatNode heroes, CombatNode enemies) {
+
+    System.out.println("Raid started!");
+
+    if (!heroes.isAlive() || !enemies.isAlive()) {
+        System.out.println("One side has no alive units.");
+        return;
+    }
+
+    System.out.println(heroes.getName() + " fight " + enemies.getName());
+}
+
 }

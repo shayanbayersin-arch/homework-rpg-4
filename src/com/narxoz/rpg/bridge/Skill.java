@@ -28,6 +28,18 @@ public abstract class Skill {
     protected int resolvedDamage() {
         return effect.computeDamage(basePower);
     }
+    public void cast(CombatNode target) {
 
-    public abstract void cast(CombatNode target);
+    int damage = effect.computeDamage(basePower);
+
+    target.takeDamage(damage);
+
+    System.out.println(
+        skillName + " deals " +
+        damage + " " +
+        effect.getEffectName() +
+        " damage to " +
+        target.getName()
+    );
+}
 }
